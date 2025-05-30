@@ -33,24 +33,29 @@ const SearchBar: React.FC<SearchBarProps> = ({
         className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         aria-label="Global Search Text"
       />
-      <fieldset
-        className="flex flex-wrap gap-2 mt-2 sm:mt-0"
-        aria-label="Searchable columns selection">
-        {columns.map((col) => (
-          <label
-            key={col}
-            className="inline-flex items-center space-x-1 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={selectedColumns.includes(col)}
-              onChange={() => toggleColumn(col)}
-              className="form-checkbox h-4 w-4 text-blue-600"
-              aria-checked={selectedColumns.includes(col)}
-            />
-            <span className="text-gray-700 text-sm">{col}</span>
-          </label>
-        ))}
-      </fieldset>
+      <details>
+        <summary className="mr-2 font-mono text-3xl marker:content-none cursor-pointer">
+          &#x2699;
+        </summary>
+        <fieldset
+          className="flex flex-wrap gap-2 mt-2 sm:mt-0"
+          aria-label="Searchable columns selection">
+          {columns.map((col) => (
+            <label
+              key={col}
+              className="inline-flex items-center space-x-1 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={selectedColumns.includes(col)}
+                onChange={() => toggleColumn(col)}
+                className="form-checkbox h-4 w-4 text-blue-600"
+                aria-checked={selectedColumns.includes(col)}
+              />
+              <span className="text-gray-700 text-sm">{col}</span>
+            </label>
+          ))}
+        </fieldset>
+      </details>
     </div>
   );
 };
