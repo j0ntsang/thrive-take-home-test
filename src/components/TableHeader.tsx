@@ -33,6 +33,18 @@ const TableHeader: React.FC<TableHeaderProps> = ({
     transition,
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    onSort();
+  };
+
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSort();
+    }
+  };
+
   return (
     <div
       ref={setNodeRef}
@@ -43,14 +55,9 @@ const TableHeader: React.FC<TableHeaderProps> = ({
       role="columnheader"
       aria-label={ariaLabels[id] || `Column: ${id}`}
       title={ariaLabels[id] || `Column: ${id}`}
-      onClick={onSort}
+      onClick={(e) => handleClick(e)}
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onSort();
-        }
-      }}>
+      onKeyDown={(e) => handleOnKeyDown(e)}>
       <span>{id}</span>
       {isSorted && (
         <span aria-hidden="true" className="ml-2">
