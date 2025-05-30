@@ -1,19 +1,16 @@
 import { DndContext, closestCenter } from "@dnd-kit/core";
-import React, { useMemo, useRef, useState } from "react";
 import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
 import { User, generateFakeUsers } from "../utils/generateFakeUsers";
+import { useMemo, useRef, useState } from "react";
 
-import { CSS } from "@dnd-kit/utilities";
 import SearchBar from "./SearchBar";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import { filterUsers } from "../utils/filterUsers";
-import { getColumnData } from "../utils/getColumnData";
 import { sortUsers } from "../utils/sortUsers";
 import { useLocalStorage } from "usehooks-ts";
 import { useVirtualizer } from "@tanstack/react-virtual";
