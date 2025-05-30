@@ -72,7 +72,7 @@ const TableApp = () => {
   };
 
   return (
-    <div className="p-4 max-w-full">
+    <div className="max-w-full">
       <SearchBar
         columns={defaultColumns}
         selectedColumns={searchColumns}
