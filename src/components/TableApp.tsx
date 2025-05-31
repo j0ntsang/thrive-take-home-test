@@ -7,7 +7,7 @@ import {
 import { User, generateFakeUsers } from "../utils/generateFakeUsers";
 import { useMemo, useRef, useState } from "react";
 
-import SearchBar from "./SearchBar";
+import SearchBar from "./SearchBar/SearchBar";
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import { filterUsers } from "../utils/filterUsers";
