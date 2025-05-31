@@ -7,8 +7,8 @@ import {
 import { User, generateFakeUsers } from "../utils/generateFakeUsers";
 import { useMemo, useRef, useState } from "react";
 
+import ColumnHeader from "./ColumnHeader/ColumnHeader";
 import SearchBar from "./SearchBar/SearchBar";
-import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
 import { filterUsers } from "../utils/filterUsers";
 import { sortUsers } from "../utils/sortUsers";
@@ -87,7 +87,7 @@ const TableApp = () => {
           strategy={horizontalListSortingStrategy}>
           <div className="flex border border-gray-300 rounded-t-md overflow-hidden select-none">
             {columns.map((col) => (
-              <TableHeader
+              <ColumnHeader
                 key={col}
                 id={col}
                 onSort={() => handleSort(col)}

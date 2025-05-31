@@ -1,13 +1,7 @@
 import { CSS } from "@dnd-kit/utilities";
+import DragHandle from "./DragHandle";
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
-
-interface TableHeaderProps {
-  id: string;
-  onSort: () => void;
-  isSorted: boolean;
-  sortDirection: "asc" | "desc";
-}
 
 const ariaLabels: Record<string, string> = {
   ID: "Identifier column",
@@ -20,7 +14,14 @@ const ariaLabels: Record<string, string> = {
   DSR: "Days Since Registered column",
 };
 
-const TableHeader: React.FC<TableHeaderProps> = ({
+interface ColumnHeaderProps {
+  id: string;
+  onSort: () => void;
+  isSorted: boolean;
+  sortDirection: "asc" | "desc";
+}
+
+const ColumnHeader: React.FC<ColumnHeaderProps> = ({
   id,
   onSort,
   isSorted,
@@ -53,18 +54,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
           onSort();
         }
       }}>
-      <button
-        {...attributes}
-        {...listeners}
-        onClick={(e) => e.stopPropagation()}
-        className="cursor-grab px-1 py-1 mr-2 rounded hover:bg-gray-200 active:cursor-grabbing"
-        aria-label={`Drag to reorder ${id}`}>
-        <div className="flex flex-col items-center space-y-0.5">
-          <span className="w-1 h-1 bg-gray-500 rounded-full" />
-          <span className="w-1 h-1 bg-gray-500 rounded-full" />
-          <span className="w-1 h-1 bg-gray-500 rounded-full" />
-        </div>
-      </button>
+      <DragHandle attributes={attributes} listeners={listeners ?? {}} id={id} />
       <span className="flex-1 text-left truncate">{id}</span>
       {isSorted && (
         <span aria-hidden="true" className="ml-2">
@@ -75,4 +65,4 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   );
 };
 
-export default TableHeader;
+export default ColumnHeader;
