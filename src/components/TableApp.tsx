@@ -5,36 +5,60 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { User, generateFakeUsers } from "../utils/generateFakeUsers";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import ColumnHeader from "./ColumnHeader/ColumnHeader";
 import SearchBar from "./SearchBar/SearchBar";
 import TableRow from "./TableRow";
 import { filterUsers } from "../utils/filterUsers";
 import { sortUsers } from "../utils/sortUsers";
-import { useLocalStorage } from "usehooks-ts";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
-const defaultColumns = [
-  "ID",
-  "First Name",
-  "Last Name",
-  "Full Name",
-  "Email",
-  "City",
-  "Registered Date",
-  "DSR",
-];
+const USERS_KEY = "generated_users";
+const COLUMNS_KEY = "column_order";
+
+const getInitialUsers = (): User[] => {
+  const stored = localStorage.getItem(USERS_KEY);
+  return stored ? JSON.parse(stored) : generateFakeUsers();
+};
+
+const getInitialColumns = (): string[] => {
+  const stored = localStorage.getItem(COLUMNS_KEY);
+  return stored
+    ? JSON.parse(stored)
+    : [
+        "ID",
+        "First Name",
+        "Last Name",
+        "Full Name",
+        "Email",
+        "City",
+        "Registered Date",
+        "DSR",
+      ];
+};
 
 const TableApp = () => {
-  const [users] = useLocalStorage<User[]>("users", generateFakeUsers);
-  const [columns, setColumns] = useState(defaultColumns);
+  const defaultColumns = useMemo(getInitialColumns, []);
+
+  const [users, setUsers] = useState<User[]>(() => getInitialUsers());
+  const [columns, setColumns] = useState<string[]>(defaultColumns);
   const [searchText, setSearchText] = useState("");
   const [searchColumns, setSearchColumns] = useState(defaultColumns);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const parentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!localStorage.getItem(USERS_KEY)) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+  }, [users]);
+
+  useEffect(() => {
+    localStorage.setItem(COLUMNS_KEY, JSON.stringify(columns));
+  }, [columns]);
 
   const filteredUsers = useMemo(
     () => filterUsers(users, searchText, searchColumns),
@@ -58,7 +82,8 @@ const TableApp = () => {
     if (active.id !== over.id) {
       const oldIndex = columns.indexOf(active.id);
       const newIndex = columns.indexOf(over.id);
-      setColumns((cols) => arrayMove(cols, oldIndex, newIndex));
+      const newColumns = arrayMove(columns, oldIndex, newIndex);
+      setColumns(newColumns);
     }
   };
 
